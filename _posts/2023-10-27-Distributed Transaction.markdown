@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "Distributed Transaction"
 date:   2023-10-27 00:00:00 +0800
-categories: jekyll update
+toc: true
+toc_label: "Table of Contents"
 ---
 
 ## Distributed Transactions
