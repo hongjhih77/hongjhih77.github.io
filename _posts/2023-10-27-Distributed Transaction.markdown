@@ -8,6 +8,8 @@ toc_sticky: true
 
 ## Distributed Transactions
 
+> The first option could be to just not split the data apart in the first place.
+
 Aggregate the infos about Distributed Transactions across multiple references.
 
 ---
@@ -55,6 +57,64 @@ Crash after commit
 
 Crash before commit
 ![2PC_ex_crash_before_commit.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/2PC_ex_crash_before_commit.png)
+
+---
+### SAGA
+- Coordinate multiple changes in state.
+- Avoids the need for locking resources.
+- Break down these LLTs(long lived transactions) into a sequence of transactions, each of which can be handled independently.
+- Have atomicity for each individual transaction inside the overall saga
+
+#### Saga Failure Modes
+
+- **Backward recovery**: A **compensating actions** that allow us to undo previously committed transactions.
+- **Forward recovery**: pick up from the point where the failure occurred, **retry** transactions.
+- A saga allows us to recover from business failures, not technical failures.
+- The saga assumes the underlying components are working properly—that the underlying system is reliable, and that we are then coordinating the work of reliable components.
+
+##### Saga rollbacks
+![Saga_rollback.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/Saga_rollback.png)
+
+Reordering workflow steps to reduce rollbacks
+
+![Saga_reorder_deduce_rollback.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/Saga_reorder_deduce_rollback.png)
+
+#### Implementing Sagas
+
+##### Orchestrated sagas
+- A central coordinator.
+- A command-and-control approach: the orchestrator controls what happens and when
+- A good degree of visibility
+
+![Saga_orch.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/Saga_orch.png)
+
+Cons:
+- Domain coupling.
+- Logic that should otherwise be pushed into the services can start to become absorbed in the orchestrator instead.
+
+##### Choreographed sagas
+- Trust-but-verify architecture.
+- Heavy use of events: events are broadcast in the system, and interested parties are able to receive them.
+- Use some sort of message broker to manage the reliable broadcast.
+- Less coupled.
+
+![Saga_chor.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/Saga_chor.png)
+
+Cons:
+- Harder to work out what is going on.
+- Lack a way of knowing what state a saga
+
+Fix cons.:
+- A **correlation ID**, we can put it into all of the events that are emitted as part of this saga.
+- Have a service whose job it is to just vacuum up all these events and present a view.
+
+### [Diagrams from DTM tutorial](https://en.dtm.pub/practice/saga.html#split-into-subtransactions)
+
+![DTM_saga.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction%2FDTM_saga.png)
+
+Failure rollback
+![DTM_saga_failed.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction%2FDTM_saga_failed.png)
+
 
 ---
 ### Reference
