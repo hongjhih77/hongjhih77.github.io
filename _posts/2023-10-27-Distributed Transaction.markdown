@@ -3,11 +3,12 @@ title:  "Distributed Transaction"
 date:   2023-10-27 00:00:00 +0800
 toc: true
 toc_label: "Table of Contents"
+toc_sticky: true
 ---
 
 ## Distributed Transactions
 
-Aggregate the infos about Distributed Transactions
+Aggregate the infos about Distributed Transactions across multiple references.
 
 ---
 ### Two Phase Commit (2PC)
@@ -39,16 +40,20 @@ The coordinator fails after collecting the votes, but before broadcasting vote r
 #### Example
 Business Scenario example using [DTM](https://en.dtm.pub/practice/msg.html#success-process) as a TM (Transaction Manager)
 
-An inter-bank transfer is a typical distributed transaction scenario, where A needs to transfer money across a bank to B. Suppose that only the transfer from A may fail and the transfer to B is able to eventually succeed
+Transfer $30 from A to B across banks.
+
+If A fails to deduct due to insufficient balance, then the transfer will directly fail and return an error; 
+if the deduction is successful, then the next transfer operation TransIn will be carried out, because TransIn does not have the problem of insufficient balance, 
+and it can be assumed that the transfer operation will definitely succeed.
 
 ![2PC_ex_n.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/2PC_ex_n.png)
 
-#####  Crash after commit
+Crash after commit
 ![2PC_ex_crash_after_commit.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/2PC_ex_crash_after_commit.png)
 
-> [My Note] Idempotence when retrying need to be applied.
+> [My Note] Idempotence must be applied when retrying.
 
-##### Crash before commit
+Crash before commit
 ![2PC_ex_crash_before_commit.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/2PC_ex_crash_before_commit.png)
 
 ---
