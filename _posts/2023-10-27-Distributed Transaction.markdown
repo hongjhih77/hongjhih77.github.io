@@ -12,6 +12,9 @@ toc_sticky: true
 
 Aggregate the infos about Distributed Transactions across multiple references.
 
+## Statement
+It's just a collection of all the references on the subject. Copyright belongs to the source.
+
 ---
 ### Two Phase Commit (2PC)
 #### Propose(Prepare) phase, Commit/Abort phase
@@ -44,8 +47,7 @@ Business Scenario example using [DTM](https://en.dtm.pub/practice/msg.html#succe
 
 Transfer $30 from A to B across banks.
 
-If A fails to deduct due to insufficient balance, then the transfer will directly fail and return an error; 
-if the deduction is successful, then the next transfer operation TransIn will be carried out, because TransIn does not have the problem of insufficient balance, 
+If A fails to deduct due to insufficient balance, then the transfer will directly fail and return an error; if the deduction is successful, then the next transfer operation TransIn will be carried out, because TransIn does not have the problem of insufficient balance, 
 and it can be assumed that the transfer operation will definitely succeed.
 
 ![2PC_ex_n.png](https://hongjhih77.github.io/img/2023-10-27-Distributed%20Transaction/2PC_ex_n.png)
